@@ -10,31 +10,31 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
         :root {
-            --panel: rgba(15, 23, 42, 0.86);
-            --panel-border: rgba(148, 163, 184, 0.18);
+            --panel: rgba(45, 43, 40, 0.86);
+            --panel-border: rgba(172, 23, 17, 0.22);
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background:
-                radial-gradient(circle at top left, rgba(190, 24, 93, 0.28), transparent 28%),
-                radial-gradient(circle at top right, rgba(245, 158, 11, 0.18), transparent 26%),
-                linear-gradient(135deg, #020617 0%, #0f172a 55%, #111827 100%);
+                radial-gradient(circle at top left, rgba(172, 23, 17, 0.28), transparent 28%),
+                radial-gradient(circle at top right, rgba(172, 23, 17, 0.18), transparent 26%),
+                linear-gradient(135deg, #2d2b28 0%, #241f1d 55%, #1a1816 100%);
         }
 
         .glass-panel {
             background: var(--panel);
             border: 1px solid var(--panel-border);
-            box-shadow: 0 18px 60px rgba(2, 6, 23, 0.36);
+            box-shadow: 0 18px 60px rgba(12, 10, 9, 0.36);
             backdrop-filter: blur(16px);
         }
     </style>
 </head>
 <body class="min-h-screen text-slate-100">
     <div class="flex min-h-screen">
-        <aside class="hidden lg:flex w-72 flex-col border-r border-white/10 bg-slate-950/60 backdrop-blur-xl">
+        <aside class="hidden lg:flex w-72 flex-col border-r border-white/10 bg-[#1f1d1b]/85 backdrop-blur-xl">
             <div class="p-8 border-b border-white/10">
-                <p class="text-xs uppercase tracking-[0.4em] text-rose-300/70">Bench-Z Fitness</p>
+                <p class="text-xs uppercase tracking-[0.4em] text-[#ac1711]/80">Bench-Z Fitness</p>
                 <h1 class="mt-3 text-3xl font-extrabold tracking-tight">Admin HQ</h1>
                 <p class="mt-2 text-sm text-slate-400">Update member profile details, plan assignment, status, and plan expiry.</p>
             </div>
@@ -44,7 +44,7 @@
                     <i class="fa-solid fa-chart-line"></i>
                     <span>Analytics Overview</span>
                 </a>
-                <a href="/admin/members" class="flex items-center gap-3 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm font-semibold text-rose-100">
+                <a href="/admin/members" class="flex items-center gap-3 rounded-2xl border border-[#ac1711]/35 bg-[#ac1711]/18 px-4 py-3 text-sm font-semibold text-[#f7d6d4]">
                     <i class="fa-solid fa-users"></i>
                     <span>Members</span>
                 </a>
@@ -61,7 +61,7 @@
             <div class="p-5 border-t border-white/10">
                 <form action="/logout" method="POST">
                     @csrf
-                    <button class="flex w-full items-center justify-center gap-2 rounded-2xl bg-white/5 px-4 py-3 text-sm font-semibold text-slate-300 transition hover:bg-rose-500/15 hover:text-white">
+                    <button class="flex w-full items-center justify-center gap-2 rounded-2xl bg-white/5 px-4 py-3 text-sm font-semibold text-slate-300 transition hover:bg-[#ac1711]/25 hover:text-white">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         <span>Logout</span>
                     </button>
@@ -74,7 +74,7 @@
                 <section class="glass-panel rounded-[2rem] p-6 sm:p-8">
                     <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
                         <div>
-                            <p class="text-sm uppercase tracking-[0.35em] text-rose-200/70">Admin Panel</p>
+                            <p class="text-sm uppercase tracking-[0.35em] text-[#ac1711]/80">Admin Panel</p>
                             <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Edit Member Details</h2>
                             <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
                                 Update the relevant member details below, including their name, email, assigned plan, current status,
@@ -110,7 +110,7 @@
                                 name="name"
                                 value="{{ old('name', $member->name) }}"
                                 required
-                                class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-rose-300 focus:outline-none"
+                                class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-[#ac1711] focus:outline-none"
                             >
                         </div>
 
@@ -122,7 +122,7 @@
                                 name="email"
                                 value="{{ old('email', $member->email) }}"
                                 required
-                                class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-rose-300 focus:outline-none"
+                                class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-[#ac1711] focus:outline-none"
                             >
                         </div>
 
@@ -131,7 +131,7 @@
                             <select
                                 id="membership_plan_id"
                                 name="membership_plan_id"
-                                class="w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-4 text-white focus:border-rose-300 focus:outline-none"
+                                class="w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-4 text-white focus:border-[#ac1711] focus:outline-none"
                             >
                                 <option value="">Unassigned</option>
                                 @foreach ($membershipPlans as $plan)
@@ -148,7 +148,7 @@
                                 id="membership_status"
                                 name="membership_status"
                                 required
-                                class="w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-4 text-white focus:border-rose-300 focus:outline-none"
+                                class="w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-4 text-white focus:border-[#ac1711] focus:outline-none"
                             >
                                 @foreach (['active', 'inactive', 'suspended'] as $status)
                                     <option value="{{ $status }}" @selected(old('membership_status', $member->membership_status) === $status)>
@@ -165,14 +165,14 @@
                                 type="date"
                                 name="plan_expires_at"
                                 value="{{ old('plan_expires_at', optional($member->plan_expires_at)->format('Y-m-d')) }}"
-                                class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-rose-300 focus:outline-none"
+                                class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-[#ac1711] focus:outline-none"
                             >
                         </div>
 
                         <div class="md:col-span-2 flex flex-col gap-3 sm:flex-row">
                             <button
                                 type="submit"
-                                class="rounded-2xl bg-gradient-to-r from-rose-700 via-rose-600 to-amber-500 px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-white transition hover:scale-[1.01]"
+                                class="rounded-2xl bg-gradient-to-r from-[#ac1711] via-[#8d140f] to-[#2d2b28] px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-white transition hover:scale-[1.01]"
                             >
                                 Save Changes
                             </button>
