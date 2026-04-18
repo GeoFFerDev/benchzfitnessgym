@@ -12,23 +12,23 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background:
-                radial-gradient(circle at top left, rgba(190, 24, 93, 0.2), transparent 24%),
-                radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.16), transparent 20%),
-                linear-gradient(155deg, #020617 0%, #0f172a 55%, #111827 100%);
+                radial-gradient(circle at top left, rgba(172, 23, 17, 0.2), transparent 24%),
+                radial-gradient(circle at bottom right, rgba(172, 23, 17, 0.16), transparent 20%),
+                linear-gradient(155deg, #2d2b28 0%, #241f1d 55%, #1a1816 100%);
         }
 
         .glass-panel {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(45, 43, 40, 0.8);
+            border: 1px solid rgba(172, 23, 17, 0.22);
             backdrop-filter: blur(18px);
-            box-shadow: 0 22px 70px rgba(2, 6, 23, 0.38);
+            box-shadow: 0 22px 70px rgba(12, 10, 9, 0.38);
         }
     </style>
 </head>
 <body class="min-h-screen text-slate-100">
     <div class="mx-auto flex min-h-screen max-w-7xl flex-col px-4 py-6 sm:px-6 lg:flex-row lg:items-center lg:gap-10 lg:px-8">
         <section class="w-full py-8 lg:w-[46%] lg:py-0">
-            <p class="text-xs uppercase tracking-[0.45em] text-rose-200/80">Bench-Z Fitness</p>
+            <p class="text-xs uppercase tracking-[0.45em] text-[#ac1711]/85">Bench-Z Fitness</p>
             <h1 class="mt-5 text-4xl font-extrabold leading-tight text-white sm:text-5xl">
                 Start your Bench-Z membership with a sharper, modern signup flow.
             </h1>
@@ -59,13 +59,13 @@
             <div class="glass-panel rounded-[2rem] p-6 sm:p-8 lg:p-10">
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                        <p class="text-xs uppercase tracking-[0.35em] text-rose-200/80">Create Account</p>
+                        <p class="text-xs uppercase tracking-[0.35em] text-[#ac1711]/85">Create Account</p>
                         <h2 class="mt-3 text-3xl font-extrabold text-white">Join Bench-Z Fitness</h2>
                         <p class="mt-3 text-sm leading-6 text-slate-300">
                             Fill in your details below to create your member profile.
                         </p>
                     </div>
-                    <div class="rounded-2xl bg-cyan-400/10 px-3 py-2 text-xs font-semibold text-cyan-100">
+                    <div class="rounded-2xl bg-[#ac1711]/12 px-3 py-2 text-xs font-semibold text-[#f3cecc]">
                         New member
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                             name="name"
                             value="{{ old('name') }}"
                             required
-                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-rose-300 focus:outline-none"
+                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-[#ac1711] focus:outline-none"
                             placeholder="Juan Dela Cruz"
                         >
                     </div>
@@ -104,7 +104,7 @@
                             name="email"
                             value="{{ old('email') }}"
                             required
-                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-rose-300 focus:outline-none"
+                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-[#ac1711] focus:outline-none"
                             placeholder="member@benchz.com"
                         >
                     </div>
@@ -116,7 +116,7 @@
                             type="password"
                             name="password"
                             required
-                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-rose-300 focus:outline-none"
+                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-[#ac1711] focus:outline-none"
                             placeholder="Create a strong password"
                         >
                     </div>
@@ -128,7 +128,7 @@
                             type="password"
                             name="password_confirmation"
                             required
-                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-rose-300 focus:outline-none"
+                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-[#ac1711] focus:outline-none"
                             placeholder="Repeat your password"
                         >
                     </div>
@@ -136,7 +136,7 @@
                     <div class="md:col-span-2">
                         <button
                             type="submit"
-                            class="w-full rounded-2xl bg-gradient-to-r from-rose-700 via-rose-600 to-amber-500 px-4 py-4 text-sm font-bold uppercase tracking-[0.25em] text-white transition hover:scale-[1.01]"
+                            class="w-full rounded-2xl bg-gradient-to-r from-[#ac1711] via-[#8d140f] to-[#2d2b28] px-4 py-4 text-sm font-bold uppercase tracking-[0.25em] text-white transition hover:scale-[1.01]"
                         >
                             Create Account
                         </button>
@@ -145,7 +145,7 @@
 
                 <div class="mt-8 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
                     <p class="text-sm text-slate-400">
-                        Already have an account? <a href="/login" class="font-semibold text-white hover:text-rose-200">Sign in</a>
+                        Already have an account? <a href="/login" class="font-semibold text-white hover:text-[#e9b2af]">Sign in</a>
                     </p>
                     <p class="text-xs uppercase tracking-[0.28em] text-slate-500">Bench-Z Member Portal</p>
                 </div>

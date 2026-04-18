@@ -13,16 +13,16 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background:
-                radial-gradient(circle at top left, rgba(190, 24, 93, 0.22), transparent 22%),
-                radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.16), transparent 22%),
-                linear-gradient(145deg, #020617 0%, #0f172a 55%, #111827 100%);
+                radial-gradient(circle at top left, rgba(172, 23, 17, 0.22), transparent 22%),
+                radial-gradient(circle at bottom right, rgba(172, 23, 17, 0.16), transparent 22%),
+                linear-gradient(145deg, #2d2b28 0%, #241f1d 55%, #1a1816 100%);
         }
 
         .glass-panel {
-            background: rgba(15, 23, 42, 0.82);
-            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(45, 43, 40, 0.82);
+            border: 1px solid rgba(172, 23, 17, 0.22);
             backdrop-filter: blur(18px);
-            box-shadow: 0 18px 60px rgba(2, 6, 23, 0.34);
+            box-shadow: 0 18px 60px rgba(12, 10, 9, 0.34);
         }
 
         [hidden] {
@@ -33,14 +33,14 @@
 <body class="min-h-screen text-slate-100">
     @php
         $planColors = [
-            'bronze' => 'text-amber-600',
+            'bronze' => 'text-[#e9b2af]',
             'silver' => 'text-slate-200',
             'gold' => 'text-yellow-300',
-            'platinum' => 'text-cyan-300',
+            'platinum' => 'text-[#f0b7b4]',
         ];
 
         $currentPlanName = $member->membershipPlan->name ?? 'No Plan Assigned';
-        $currentPlanClass = $planColors[strtolower($currentPlanName)] ?? 'text-rose-200';
+        $currentPlanClass = $planColors[strtolower($currentPlanName)] ?? 'text-[#e9b2af]';
     @endphp
 
     <div class="mx-auto min-h-screen max-w-5xl px-4 py-5 sm:px-6 lg:px-8">
@@ -49,7 +49,7 @@
                 <button
                     type="button"
                     id="member-sections-toggle"
-                    class="flex items-center justify-center gap-2 rounded-2xl bg-white/5 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:bg-rose-500/15 hover:text-white"
+                    class="flex items-center justify-center gap-2 rounded-2xl bg-white/5 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:bg-[#ac1711]/25 hover:text-white"
                 >
                     <i class="fa-solid fa-bars-staggered"></i>
                     <span>Sections</span>
@@ -58,7 +58,7 @@
         </div>
 
         @if (session('success'))
-            <div class="mt-6 rounded-[1.75rem] border border-emerald-400/20 bg-emerald-500/10 px-5 py-4 text-sm text-emerald-100">
+            <div class="mt-6 rounded-[1.75rem] border border-[#ac1711]/25 bg-[#ac1711]/12 px-5 py-4 text-sm text-[#f3cecc]">
                 {{ session('success') }}
             </div>
         @endif
@@ -97,7 +97,7 @@
             </div>
 
             <div class="mt-6 flex items-start gap-4">
-                <div class="flex h-16 w-16 items-center justify-center rounded-3xl bg-gradient-to-br from-rose-700 to-amber-500 text-2xl font-extrabold text-white">
+                <div class="flex h-16 w-16 items-center justify-center rounded-3xl bg-gradient-to-br from-[#ac1711] to-[#2d2b28] text-2xl font-extrabold text-white">
                     {{ strtoupper(substr($member->name, 0, 1)) }}
                 </div>
                 <div class="min-w-0">
@@ -118,7 +118,7 @@
                         name="name"
                         value="{{ old('name', $member->name) }}"
                         required
-                        class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-rose-300 focus:outline-none"
+                        class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-[#ac1711] focus:outline-none"
                     >
                 </div>
 
@@ -130,13 +130,13 @@
                         name="email"
                         value="{{ old('email', $member->email) }}"
                         required
-                        class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-rose-300 focus:outline-none"
+                        class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-slate-500 focus:border-[#ac1711] focus:outline-none"
                     >
                 </div>
 
                 <button
                     type="submit"
-                    class="rounded-2xl bg-gradient-to-r from-rose-700 via-rose-600 to-amber-500 px-4 py-4 text-sm font-bold uppercase tracking-[0.22em] text-white transition hover:scale-[1.01]"
+                    class="rounded-2xl bg-gradient-to-r from-[#ac1711] via-[#8d140f] to-[#2d2b28] px-4 py-4 text-sm font-bold uppercase tracking-[0.22em] text-white transition hover:scale-[1.01]"
                 >
                     Save Profile
                 </button>
@@ -165,7 +165,7 @@
             </div>
 
             <nav class="mt-8 grid gap-3">
-                <a href="/dashboard/profile" class="rounded-[1.5rem] bg-rose-500/10 px-5 py-4 text-sm font-semibold text-rose-100 transition hover:bg-rose-500/20">
+                <a href="/dashboard/profile" class="rounded-[1.5rem] bg-[#ac1711]/18 px-5 py-4 text-sm font-semibold text-[#f7d6d4] transition hover:bg-[#ac1711]/25">
                     Profile
                 </a>
                 <a href="/dashboard#membership-details" class="rounded-[1.5rem] bg-white/5 px-5 py-4 text-sm font-semibold text-slate-100 transition hover:bg-white/10">
@@ -188,7 +188,7 @@
 
                 <form action="/logout" method="POST">
                     @csrf
-                    <button class="flex w-full items-center justify-center gap-2 rounded-[1.5rem] bg-white/5 px-5 py-4 text-sm font-semibold text-slate-100 transition hover:bg-rose-500/15 hover:text-white">
+                    <button class="flex w-full items-center justify-center gap-2 rounded-[1.5rem] bg-white/5 px-5 py-4 text-sm font-semibold text-slate-100 transition hover:bg-[#ac1711]/25 hover:text-white">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         <span>Sign Out</span>
                     </button>

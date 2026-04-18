@@ -13,37 +13,37 @@
         :root {
             --accent: #7f1d1d;
             --accent-soft: #be123c;
-            --panel: rgba(15, 23, 42, 0.86);
-            --panel-border: rgba(148, 163, 184, 0.18);
+            --panel: rgba(45, 43, 40, 0.86);
+            --panel-border: rgba(172, 23, 17, 0.22);
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background:
-                radial-gradient(circle at top left, rgba(190, 24, 93, 0.28), transparent 28%),
-                radial-gradient(circle at top right, rgba(245, 158, 11, 0.18), transparent 26%),
-                linear-gradient(135deg, #020617 0%, #0f172a 55%, #111827 100%);
+                radial-gradient(circle at top left, rgba(172, 23, 17, 0.28), transparent 28%),
+                radial-gradient(circle at top right, rgba(172, 23, 17, 0.18), transparent 26%),
+                linear-gradient(135deg, #2d2b28 0%, #241f1d 55%, #1a1816 100%);
         }
 
         .glass-panel {
             background: var(--panel);
             border: 1px solid var(--panel-border);
-            box-shadow: 0 18px 60px rgba(2, 6, 23, 0.36);
+            box-shadow: 0 18px 60px rgba(12, 10, 9, 0.36);
             backdrop-filter: blur(16px);
         }
     </style>
 </head>
 <body class="min-h-screen text-slate-100">
     <div class="flex min-h-screen">
-        <aside class="hidden lg:flex w-72 flex-col border-r border-white/10 bg-slate-950/60 backdrop-blur-xl">
+        <aside class="hidden lg:flex w-72 flex-col border-r border-white/10 bg-[#1f1d1b]/85 backdrop-blur-xl">
             <div class="p-8 border-b border-white/10">
-                <p class="text-xs uppercase tracking-[0.4em] text-rose-300/70">Bench-Z Fitness</p>
+                <p class="text-xs uppercase tracking-[0.4em] text-[#ac1711]/80">Bench-Z Fitness</p>
                 <h1 class="mt-3 text-3xl font-extrabold tracking-tight">Admin HQ</h1>
                 <p class="mt-2 text-sm text-slate-400">Membership and gym activity analytics.</p>
             </div>
 
             <nav class="flex-1 px-5 py-8 space-y-2">
-                <a href="/admin/panel" class="flex items-center gap-3 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm font-semibold text-rose-100">
+                <a href="/admin/panel" class="flex items-center gap-3 rounded-2xl border border-[#ac1711]/35 bg-[#ac1711]/18 px-4 py-3 text-sm font-semibold text-[#f7d6d4]">
                     <i class="fa-solid fa-chart-line"></i>
                     <span>Analytics Overview</span>
                 </a>
@@ -64,7 +64,7 @@
             <div class="p-5 border-t border-white/10">
                 <form action="/logout" method="POST">
                     @csrf
-                    <button class="flex w-full items-center justify-center gap-2 rounded-2xl bg-white/5 px-4 py-3 text-sm font-semibold text-slate-300 transition hover:bg-rose-500/15 hover:text-white">
+                    <button class="flex w-full items-center justify-center gap-2 rounded-2xl bg-white/5 px-4 py-3 text-sm font-semibold text-slate-300 transition hover:bg-[#ac1711]/25 hover:text-white">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         <span>Logout</span>
                     </button>
@@ -77,7 +77,7 @@
                 <section class="glass-panel rounded-[2rem] p-6 sm:p-8">
                     <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
                         <div>
-                            <p class="text-sm uppercase tracking-[0.35em] text-rose-200/70">Admin Panel</p>
+                            <p class="text-sm uppercase tracking-[0.35em] text-[#ac1711]/80">Admin Panel</p>
                             <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Gym Analytics Dashboard</h2>
                             <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
                                 View total members, monthly revenue, today's attendance, peak gym hours, plan popularity,
@@ -85,9 +85,9 @@
                             </p>
                         </div>
 
-                        <div class="rounded-3xl border border-emerald-400/20 bg-emerald-400/10 px-5 py-4 text-sm text-emerald-100">
+                        <div class="rounded-3xl border border-[#ac1711]/25 bg-[#ac1711]/15 px-5 py-4 text-sm text-[#f3cecc]">
                             <p class="font-semibold">Dashboard snapshot</p>
-                            <p class="mt-1 text-emerald-50/80">
+                            <p class="mt-1 text-[#f5dedd]/90">
                                 {{ $totalUsers > 0 ? 'Using live member records from the database with dashboard-ready analytics cards and charts.' : 'Showing dashboard-ready analytics with demo values until more attendance and payment data is added.' }}
                             </p>
                         </div>
@@ -97,10 +97,10 @@
                 <section class="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-3">
                     <div class="glass-panel rounded-[1.75rem] p-6">
                         <div class="flex items-center justify-between">
-                            <div class="rounded-2xl bg-blue-500/15 p-4 text-blue-300">
+                            <div class="rounded-2xl bg-[#2d2b28]/70 p-4 text-[#d8d1cb]">
                                 <i class="fa-solid fa-users text-xl"></i>
                             </div>
-                            <span class="rounded-full bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-200">Total members</span>
+                            <span class="rounded-full bg-[#2d2b28]/70 px-3 py-1 text-xs font-semibold text-[#e8e1db]">Total members</span>
                         </div>
                         <p class="mt-6 text-sm text-slate-400">Registered members</p>
                         <h3 class="mt-2 text-4xl font-extrabold text-white">{{ number_format($displayMembers) }}</h3>
@@ -109,10 +109,10 @@
 
                     <div class="glass-panel rounded-[1.75rem] p-6">
                         <div class="flex items-center justify-between">
-                            <div class="rounded-2xl bg-emerald-500/15 p-4 text-emerald-300">
+                            <div class="rounded-2xl bg-[#ac1711]/15 p-4 text-[#f0b7b4]">
                                 <i class="fa-solid fa-wallet text-xl"></i>
                             </div>
-                            <span class="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-200">Monthly revenue</span>
+                            <span class="rounded-full bg-[#ac1711]/12 px-3 py-1 text-xs font-semibold text-[#f2c4c2]">Monthly revenue</span>
                         </div>
                         <p class="mt-6 text-sm text-slate-400">Estimated membership revenue</p>
                         <h3 class="mt-2 text-4xl font-extrabold text-white">PHP {{ number_format($monthlyRevenue) }}</h3>
@@ -121,10 +121,10 @@
 
                     <div class="glass-panel rounded-[1.75rem] p-6">
                         <div class="flex items-center justify-between">
-                            <div class="rounded-2xl bg-amber-500/15 p-4 text-amber-300">
+                            <div class="rounded-2xl bg-[#2d2b28]/70 p-4 text-[#d8d1cb]">
                                 <i class="fa-solid fa-door-open text-xl"></i>
                             </div>
-                            <span class="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-200">Today's attendance</span>
+                            <span class="rounded-full bg-[#2d2b28]/70 px-3 py-1 text-xs font-semibold text-[#e8e1db]">Today's attendance</span>
                         </div>
                         <p class="mt-6 text-sm text-slate-400">Projected gym check-ins today</p>
                         <h3 class="mt-2 text-4xl font-extrabold text-white">{{ number_format($todaysAttendance) }}</h3>
@@ -140,7 +140,7 @@
                                 <h3 class="mt-2 text-xl font-bold text-white">Peak Hours</h3>
                                 <p class="mt-2 text-sm text-slate-400">Track the busiest hours inside the gym.</p>
                             </div>
-                            <div class="rounded-2xl bg-rose-500/10 px-3 py-2 text-xs font-semibold text-rose-200">Live focus</div>
+                            <div class="rounded-2xl bg-[#ac1711]/18 px-3 py-2 text-xs font-semibold text-[#e9b2af]">Live focus</div>
                         </div>
                         <div class="mt-6 h-80">
                             <canvas id="peakHoursChart"></canvas>
@@ -215,18 +215,18 @@
                                 </thead>
                                 <tbody class="divide-y divide-white/10">
                                     @forelse ($recentUsers as $user)
-                                        <tr class="bg-slate-950/20">
+                                        <tr class="bg-[#1f1d1b]/55">
                                             <td class="px-6 py-4 font-semibold text-white">{{ $user->name }}</td>
                                             <td class="px-6 py-4 text-slate-300">{{ $user->email }}</td>
                                             <td class="px-6 py-4">
-                                                <span class="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-200">
+                                                <span class="rounded-full bg-[#ac1711]/12 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#f2c4c2]">
                                                     Active
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 text-right text-slate-400">{{ $user->created_at?->format('F d, Y') }}</td>
                                         </tr>
                                     @empty
-                                        <tr class="bg-slate-950/20">
+                                        <tr class="bg-[#1f1d1b]/55">
                                             <td colspan="4" class="px-6 py-10 text-center text-slate-400">
                                                 No member registrations yet. The analytics cards and charts above are ready for future data.
                                             </td>
@@ -243,7 +243,7 @@
 
     <script>
         Chart.defaults.color = '#cbd5e1';
-        Chart.defaults.borderColor = 'rgba(148, 163, 184, 0.18)';
+        Chart.defaults.borderColor = 'rgba(172, 23, 17, 0.22)';
         Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
 
         const peakHours = @json($peakHours);
