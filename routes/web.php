@@ -102,6 +102,12 @@ Route::post('/dashboard/membership-plans/{plan}/buy', function (MembershipPlan $
         return redirect('/dashboard')->with('error', 'Only member accounts can update membership plans.');
     }
 
+    request()->validate([
+        'confirm_membership_update' => 'accepted',
+    ], [
+        'confirm_membership_update.accepted' => 'Please confirm your plan selection before continuing.',
+    ]);
+
     $planExpiry = match ($plan->duration_unit) {
         'day', 'days' => now()->addDays((int) $plan->duration_value),
         'week', 'weeks' => now()->addWeeks((int) $plan->duration_value),
@@ -117,7 +123,12 @@ Route::post('/dashboard/membership-plans/{plan}/buy', function (MembershipPlan $
         'plan_expires_at' => $planExpiry,
     ]);
 
-    return redirect('/dashboard')->with('success', 'Your membership plan is now set to ' . $plan->name . '.');
+    AttendanceLog::create([
+        'user_id' => $member->id,
+        'checked_in_at' => now(),
+    ]);
+
+    return redirect('/dashboard')->with('success', 'Your membership plan is now set to ' . $plan->name . '. A temporary check-in was also logged.');
 })->middleware('auth');
 
 Route::get('/dashboard/profile', function () {
@@ -160,7 +171,13 @@ Route::post('/login', function (Request $request) {
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
         if (auth()->user()->role === 'admin') {
-            return redirect('/admin/panel');
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return back()
+                ->withInput(['email' => $credentials['email']])
+                ->withErrors(['email' => 'Admin accounts must use the Admin Login with MFA.']);
         }
 
         return redirect()->intended('/dashboard');
@@ -447,6 +464,9 @@ Route::get('/admin/attendance-logs', function (Request $request) {
     $actualToday = AttendanceLog::whereDate('checked_in_at', Carbon::today())->count();
     $actualWeek = AttendanceLog::whereBetween('checked_in_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count();
     $actualMonth = AttendanceLog::whereBetween('checked_in_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->count();
+    $members = User::where('role', 'member')
+        ->orderBy('name')
+        ->get(['id', 'name', 'email']);
 
     return view('admin.attendance-logs', [
         'attendanceLogs' => $attendanceLogs,
@@ -454,5 +474,32 @@ Route::get('/admin/attendance-logs', function (Request $request) {
         'todaysAttendance' => max($actualToday, 100),
         'weeksAttendance' => max($actualWeek, 300),
         'monthsAttendance' => max($actualMonth, 1000),
+        'members' => $members,
     ]);
+})->middleware('auth');
+
+Route::post('/admin/attendance-logs/simulate-checkin', function (Request $request) {
+    if (auth()->user()->role !== 'admin') {
+        return redirect('/dashboard');
+    }
+
+    $validated = $request->validate([
+        'member_id' => 'required|integer|exists:users,id',
+    ]);
+
+    $member = User::where('id', $validated['member_id'])
+        ->where('role', 'member')
+        ->first();
+
+    if (! $member) {
+        return redirect('/admin/attendance-logs')->with('error', 'Selected account is not a member.');
+    }
+
+    AttendanceLog::create([
+        'user_id' => $member->id,
+        'checked_in_at' => now(),
+    ]);
+
+    return redirect('/admin/attendance-logs')
+        ->with('success', 'Attendance logged for ' . $member->name . '. The member can now see this in session history.');
 })->middleware('auth');

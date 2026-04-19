@@ -182,14 +182,13 @@
                 <div class="rounded-2xl bg-white/5 px-4 py-2 text-sm text-slate-300">Proposal preview</div>
             </div>
 
-            <div class="mt-6 -mx-1 overflow-x-auto pb-2">
-                <div class="flex min-w-max gap-4 px-1">
+            <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 @forelse ($availablePlans as $plan)
                     @php
                         $planColorClass = $planColors[strtolower($plan->name)] ?? 'text-[#e9b2af]';
                         $isCurrentPlan = $member->membership_plan_id === $plan->id;
                     @endphp
-                    <div class="w-[285px] flex-none rounded-[1.75rem] border border-white/10 bg-white/5 p-5 sm:w-[320px]">
+                    <div class="rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
                         <div class="flex items-start justify-between gap-3">
                             <div>
                                 <p class="text-xs uppercase tracking-[0.25em] text-slate-500">Membership Tier</p>
@@ -219,6 +218,16 @@
                             @else
                                 <form action="/dashboard/membership-plans/{{ $plan->id }}/buy" method="POST">
                                     @csrf
+                                    <label class="mb-3 flex items-start gap-2 rounded-xl border border-white/10 bg-[#1f1d1b]/55 px-3 py-2 text-xs text-slate-300">
+                                        <input
+                                            type="checkbox"
+                                            name="confirm_membership_update"
+                                            value="1"
+                                            required
+                                            class="mt-0.5 h-4 w-4 rounded border-white/20 bg-[#2d2b28] text-[#ac1711] focus:ring-[#ac1711]"
+                                        >
+                                        <span>Confirm plan update and simulate check-in on success.</span>
+                                    </label>
                                     <button
                                         type="submit"
                                         class="w-full rounded-2xl bg-gradient-to-r from-[#ac1711] via-[#8d140f] to-[#2d2b28] px-4 py-3 text-sm font-bold uppercase tracking-[0.22em] text-white transition hover:scale-[1.01]"
@@ -234,7 +243,6 @@
                         No membership plans are available yet.
                     </div>
                 @endforelse
-                </div>
             </div>
         </section>
 

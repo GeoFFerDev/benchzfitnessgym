@@ -128,6 +128,58 @@
                     </div>
                 </section>
 
+                @if (session('success'))
+                    <div class="mt-6 rounded-3xl border border-[#ac1711]/25 bg-[#ac1711]/12 px-5 py-4 text-sm text-[#f3cecc]">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="mt-6 rounded-3xl border border-red-400/20 bg-red-500/10 px-5 py-4 text-sm text-red-100">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="mt-6 rounded-3xl border border-red-400/20 bg-red-500/10 px-5 py-4 text-sm text-red-100">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
+
+                <section class="glass-panel mt-6 rounded-[1.75rem] p-6">
+                    <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                        <div>
+                            <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Validation Simulation</p>
+                            <h3 class="mt-2 text-xl font-bold text-white">Temporary Admin Check-In</h3>
+                            <p class="mt-2 text-sm text-slate-300">After member validation, log attendance to simulate an actual gym check-in.</p>
+                        </div>
+
+                        <form method="POST" action="/admin/attendance-logs/simulate-checkin" class="w-full max-w-lg">
+                            @csrf
+                            <label for="member_id" class="mb-2 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Select Member</label>
+                            <div class="flex flex-col gap-3 sm:flex-row">
+                                <select
+                                    id="member_id"
+                                    name="member_id"
+                                    required
+                                    class="w-full rounded-2xl border border-white/10 bg-[#2d2b28]/80 px-4 py-3 text-white focus:border-[#ac1711] focus:outline-none"
+                                >
+                                    <option value="">Choose a member</option>
+                                    @foreach ($members as $member)
+                                        <option value="{{ $member->id }}">{{ $member->name }} ({{ $member->email }})</option>
+                                    @endforeach
+                                </select>
+                                <button
+                                    type="submit"
+                                    class="rounded-2xl bg-gradient-to-r from-[#ac1711] via-[#8d140f] to-[#2d2b28] px-5 py-3 text-sm font-semibold text-white"
+                                >
+                                    Validate + Check-In
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
                 <section class="glass-panel mt-6 rounded-[1.75rem] p-6">
                     <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                         <div>
