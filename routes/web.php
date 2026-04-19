@@ -56,6 +56,20 @@ Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
+Route::get('/admin/login', function () {
+    return view('auth.admin-login');
+})->name('admin.login');
+
+Route::get('/admin/mfa', function (Request $request) {
+    if (! $request->session()->has('pending_admin_mfa_user_id')) {
+        return redirect()->route('admin.login');
+    }
+
+    return view('auth.admin-mfa', [
+        'testingCode' => $request->session()->get('pending_admin_mfa_code'),
+    ]);
+})->name('admin.mfa');
+
 // Only logged in users can see this
 Route::get('/dashboard', function () {
     $member = auth()->user()->load([
@@ -88,6 +102,12 @@ Route::post('/dashboard/membership-plans/{plan}/buy', function (MembershipPlan $
         return redirect('/dashboard')->with('error', 'Only member accounts can update membership plans.');
     }
 
+    request()->validate([
+        'confirm_membership_update' => 'accepted',
+    ], [
+        'confirm_membership_update.accepted' => 'Please confirm your plan selection before continuing.',
+    ]);
+
     $planExpiry = match ($plan->duration_unit) {
         'day', 'days' => now()->addDays((int) $plan->duration_value),
         'week', 'weeks' => now()->addWeeks((int) $plan->duration_value),
@@ -103,7 +123,12 @@ Route::post('/dashboard/membership-plans/{plan}/buy', function (MembershipPlan $
         'plan_expires_at' => $planExpiry,
     ]);
 
-    return redirect('/dashboard')->with('success', 'Your membership plan is now set to ' . $plan->name . '.');
+    AttendanceLog::create([
+        'user_id' => $member->id,
+        'checked_in_at' => now(),
+    ]);
+
+    return redirect('/dashboard')->with('success', 'Your membership plan is now set to ' . $plan->name . '. A temporary check-in was also logged.');
 })->middleware('auth');
 
 Route::get('/dashboard/profile', function () {
@@ -136,6 +161,7 @@ Route::post('/logout', function () {
     Auth::logout();
     return redirect('/login');
 });
+
 Route::post('/login', function (Request $request) {
     $credentials = $request->validate([
         'email' => 'required|email',
@@ -144,6 +170,16 @@ Route::post('/login', function (Request $request) {
 
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
+        if (auth()->user()->role === 'admin') {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return back()
+                ->withInput(['email' => $credentials['email']])
+                ->withErrors(['email' => 'Admin accounts must use the Admin Login with MFA.']);
+        }
+
         return redirect()->intended('/dashboard');
     }
 
@@ -152,24 +188,69 @@ Route::post('/login', function (Request $request) {
     ]);
 });
 
-Route::post('/login', function (Request $request) {
-    $credentials = $request->validate([
+Route::post('/admin/login', function (Request $request) {
+    $validated = $request->validate([
         'email' => 'required|email',
-        'password' => 'required',
+        'password' => 'required|string',
     ]);
 
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
+    $admin = User::where('email', $validated['email'])
+        ->where('role', 'admin')
+        ->first();
 
-        // CHECK ROLE HERE
-        if (auth()->user()->role === 'admin') {
-            return redirect('/admin/panel');
-        }
-
-        return redirect('/dashboard');
+    if (! $admin || ! Hash::check($validated['password'], $admin->password)) {
+        return back()
+            ->withInput(['email' => $validated['email']])
+            ->withErrors(['email' => 'Invalid admin credentials.']);
     }
 
-    return back()->withErrors(['email' => 'Invalid credentials.']);
+    $code = '112233';
+
+    $request->session()->put([
+        'pending_admin_mfa_user_id' => $admin->id,
+        'pending_admin_mfa_code' => $code,
+        'pending_admin_mfa_expires_at' => now()->addMinutes(10)->timestamp,
+    ]);
+
+    return redirect()
+        ->route('admin.mfa')
+        ->with('success', 'A test MFA code has been generated. Use ' . $code . ' to continue.');
+})->name('admin.login.submit');
+
+Route::post('/admin/mfa', function (Request $request) {
+    $validated = $request->validate([
+        'code' => 'required|digits:6',
+    ]);
+
+    $pendingAdminId = $request->session()->get('pending_admin_mfa_user_id');
+    $pendingCode = $request->session()->get('pending_admin_mfa_code');
+    $expiresAt = (int) $request->session()->get('pending_admin_mfa_expires_at');
+
+    if (! $pendingAdminId || ! $pendingCode || now()->timestamp > $expiresAt) {
+        $request->session()->forget([
+            'pending_admin_mfa_user_id',
+            'pending_admin_mfa_code',
+            'pending_admin_mfa_expires_at',
+        ]);
+
+        return redirect()
+            ->route('admin.login')
+            ->withErrors(['email' => 'MFA session expired. Please log in again.']);
+    }
+
+    if ($validated['code'] !== $pendingCode) {
+        return back()->withErrors(['code' => 'Invalid MFA code.']);
+    }
+
+    Auth::loginUsingId($pendingAdminId);
+    $request->session()->regenerate();
+    $request->session()->forget([
+        'pending_admin_mfa_user_id',
+        'pending_admin_mfa_code',
+        'pending_admin_mfa_expires_at',
+    ]);
+
+    return redirect('/admin/panel');
 });
 
 Route::get('/admin/panel', function () {
