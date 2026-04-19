@@ -219,6 +219,16 @@
                             @else
                                 <form action="/dashboard/membership-plans/{{ $plan->id }}/buy" method="POST">
                                     @csrf
+                                    <label class="mb-3 flex items-start gap-2 rounded-xl border border-white/10 bg-[#1f1d1b]/55 px-3 py-2 text-xs text-slate-300">
+                                        <input
+                                            type="checkbox"
+                                            name="confirm_membership_update"
+                                            value="1"
+                                            required
+                                            class="mt-0.5 h-4 w-4 rounded border-white/20 bg-[#2d2b28] text-[#ac1711] focus:ring-[#ac1711]"
+                                        >
+                                        <span>Confirm plan update and simulate check-in on success.</span>
+                                    </label>
                                     <button
                                         type="submit"
                                         class="w-full rounded-2xl bg-gradient-to-r from-[#ac1711] via-[#8d140f] to-[#2d2b28] px-4 py-3 text-sm font-bold uppercase tracking-[0.22em] text-white transition hover:scale-[1.01]"

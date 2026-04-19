@@ -102,6 +102,12 @@ Route::post('/dashboard/membership-plans/{plan}/buy', function (MembershipPlan $
         return redirect('/dashboard')->with('error', 'Only member accounts can update membership plans.');
     }
 
+    request()->validate([
+        'confirm_membership_update' => 'accepted',
+    ], [
+        'confirm_membership_update.accepted' => 'Please confirm your plan selection before continuing.',
+    ]);
+
     $planExpiry = match ($plan->duration_unit) {
         'day', 'days' => now()->addDays((int) $plan->duration_value),
         'week', 'weeks' => now()->addWeeks((int) $plan->duration_value),
@@ -117,7 +123,12 @@ Route::post('/dashboard/membership-plans/{plan}/buy', function (MembershipPlan $
         'plan_expires_at' => $planExpiry,
     ]);
 
-    return redirect('/dashboard')->with('success', 'Your membership plan is now set to ' . $plan->name . '.');
+    AttendanceLog::create([
+        'user_id' => $member->id,
+        'checked_in_at' => now(),
+    ]);
+
+    return redirect('/dashboard')->with('success', 'Your membership plan is now set to ' . $plan->name . '. A temporary check-in was also logged.');
 })->middleware('auth');
 
 Route::get('/dashboard/profile', function () {
@@ -160,7 +171,13 @@ Route::post('/login', function (Request $request) {
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
         if (auth()->user()->role === 'admin') {
-            return redirect('/admin/panel');
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return back()
+                ->withInput(['email' => $credentials['email']])
+                ->withErrors(['email' => 'Admin accounts must use the Admin Login with MFA.']);
         }
 
         return redirect()->intended('/dashboard');
