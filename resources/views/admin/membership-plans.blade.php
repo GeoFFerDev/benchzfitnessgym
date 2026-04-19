@@ -32,7 +32,8 @@
 </head>
 <body class="min-h-screen text-slate-100">
     <div class="flex min-h-screen">
-        <aside class="hidden lg:flex w-72 flex-col border-r border-white/10 bg-[#1f1d1b]/85 backdrop-blur-xl">
+        <div id="admin-sidebar-overlay" class="fixed inset-0 z-40 hidden bg-black/55 lg:hidden"></div>
+        <aside id="admin-sidebar" class="fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col border-r border-white/10 bg-[#1f1d1b]/95 backdrop-blur-xl transition-transform duration-300 ease-out lg:sticky lg:top-0 lg:h-screen lg:translate-x-0">
             <div class="p-8 border-b border-white/10">
                 <p class="text-xs uppercase tracking-[0.4em] text-[#ac1711]/80">Bench-Z Fitness</p>
                 <h1 class="mt-3 text-3xl font-extrabold tracking-tight">Admin HQ</h1>
@@ -70,6 +71,10 @@
         </aside>
 
         <main class="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+            <button id="admin-sidebar-toggle" type="button" class="mb-4 inline-flex items-center gap-2 rounded-xl border border-[#ac1711]/40 bg-[#1f1d1b]/90 px-4 py-2 text-sm font-semibold text-[#f7d6d4] lg:hidden">
+                <i class="fa-solid fa-bars"></i>
+                <span>Menu</span>
+            </button>
             <div class="mx-auto max-w-7xl">
                 <section class="glass-panel rounded-[2rem] p-6 sm:p-8">
                     <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
@@ -121,7 +126,7 @@
                             $tierColors = [
                                 'bronze' => 'text-[#e9b2af]',
                                 'silver' => 'text-slate-300',
-                                'gold' => 'text-yellow-300',
+                                'gold' => 'text-[#f0b7b4]',
                                 'platinum' => 'text-[#f0b7b4]',
                             ];
                         @endphp
@@ -205,7 +210,7 @@
                                         id="duration_unit"
                                         name="duration_unit"
                                         required
-                                        class="w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-4 text-white focus:border-[#ac1711] focus:outline-none"
+                                        class="w-full rounded-2xl border border-white/10 bg-[#2d2b28]/80 px-4 py-4 text-white focus:border-[#ac1711] focus:outline-none"
                                     >
                                         <option value="">Select unit</option>
                                         @foreach (['day', 'days', 'week', 'weeks', 'month', 'months', 'year', 'years'] as $unit)
@@ -242,5 +247,43 @@
             </div>
         </main>
     </div>
+    <script>
+        (() => {
+            const sidebar = document.getElementById('admin-sidebar');
+            const overlay = document.getElementById('admin-sidebar-overlay');
+            const toggle = document.getElementById('admin-sidebar-toggle');
+
+            if (!sidebar || !overlay || !toggle) {
+                return;
+            }
+
+            const openSidebar = () => {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            };
+
+            const closeSidebar = () => {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            };
+
+            toggle.addEventListener('click', () => {
+                if (sidebar.classList.contains('-translate-x-full')) {
+                    openSidebar();
+                    return;
+                }
+
+                closeSidebar();
+            });
+
+            overlay.addEventListener('click', closeSidebar);
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 1024) {
+                    overlay.classList.add('hidden');
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
